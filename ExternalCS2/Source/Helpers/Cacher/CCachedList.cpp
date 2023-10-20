@@ -68,16 +68,15 @@ void CCachedEntityList::Instance() {
         if (!pPlayer.IsValid())
             continue;
 
-        const auto bPawnIsAlive = pPlayer.Get<bool>(Offsets::bPawnIsAlive);
-
-        if (!bPawnIsAlive)
-            continue;
-
         auto pEntityPawn = GeniusPtr(pEntitySystem->GetEntityFromHandle(pPlayer.Get<std::uint32_t>(Offsets::m_hPawn)), 0x1238);
 
         if (!pEntityPawn.IsValid()) 
             continue;
-        
+
+        const auto iHealth = pEntityPawn.Get<std::int32_t>(Offsets::iHealth);
+
+        if (iHealth <= 0)
+            continue;
 
         const auto iTeamNum = pEntityPawn.Get<std::int32_t>(Offsets::iTeamNum);
 
@@ -97,8 +96,6 @@ void CCachedEntityList::Instance() {
         const auto vecMins = pCollision.Get< Vector >(Offsets::vecMins);
         const auto vecMaxs = pCollision.Get< Vector >(Offsets::vecMaxs);
         const auto vecOrigin = pGameSceneNode.Get< Vector >(Offsets::vecOrigin);
-
-        const auto iHealth = pPlayer.Get<std::uint32_t>(Offsets::iHealth);
 
         //printf("[%i/64]has %i hp\n", iEntityIdx, iHealth);
 

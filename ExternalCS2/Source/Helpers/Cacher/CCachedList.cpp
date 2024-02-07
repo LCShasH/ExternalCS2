@@ -53,12 +53,17 @@ void CCachedEntityList::Instance() {
     if (!clientBase)
         return;
 
-    const auto pLocalPlayerPawn = g_pMemoryManager->RPM(clientBase + Offsets::LocalPlayerPawn);
+    auto pLocalPlayerController = GeniusPtr(clientBase + Offsets::LocalPlayerController, 0x848);
 
-    if (!pLocalPlayerPawn)
+    if (!pLocalPlayerController.IsValid())
         return;
 
-    const auto iLocalTeam = g_pMemoryManager->RPM<std::int32_t>(pLocalPlayerPawn + Offsets::iTeamNum);
+    auto pLocalPlayerPawn = GeniusPtr(pEntitySystem->GetEntityFromHandle(pLocalPlayerController.Get<std::uint32_t>(Offsets::m_hPawn)), 0x1238);
+
+    if (!pLocalPlayerPawn.IsValid())
+        return;
+
+    const auto iLocalTeam = pLocalPlayerPawn.Get<std::int32_t>(Offsets::iTeamNum);
 
     const auto pViewMatrix = g_pMemoryManager->RPM< VMatrix >(clientBase + Offsets::ViewMatrix);
 

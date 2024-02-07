@@ -144,7 +144,7 @@ void CMemoryManager::SetupOffsets() {
     .text:0000000180564EE3 48 8B 0D 3E 62 27 01                    mov     rcx, cs:qword_1817DA118 <- what we need
     .text:0000000180564EEA 48 85 C9                                test    rcx, rcx
     */
-    Offsets::LocalPlayerPawn = GetDwordOffset(GetCallAddress(PatternScan(hClientDll, "E8 ? ? ? ? 83 FF FF 89 5C 24 30")) + 0x43, 0, 0x7, reinterpret_cast<std::uintptr_t>(hClientDll));
+    Offsets::LocalPlayerController = GetDwordOffset(GetCallAddress(PatternScan(hClientDll, "48 8B 1D ?? ?? ?? ?? 48 8B 6C 24 30") + 2), 0, 0, reinterpret_cast<std::uintptr_t>(hClientDll));
 
     /*
     .text:0000000180232220 48 63 C2                                movsxd  rax, edx
